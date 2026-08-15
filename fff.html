@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KHBSR | للبرمجة والتطوير الاحترافي - الإصدار السينمائي الفائق</title>
+    <!-- استدعاء الخطوط العالمية المحدثة لضمان أعلى جودة للقراءة والوضوح -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- استدعاء مكتبة الأيقونات العالمية FontAwesome الإصدار المتقدم -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           [SECTION 01] - المتغيرات البرمجية الأساسية وأنظمة الألوان (CSS Custom Properties)
+           ========================================================================== */
+        :root {
+            --bg-deep: #020617;
+            --bg-surface: #0d1b2a;
+            --bg-surface-hover: #12263f;
+            --accent-blue: #00f2fe;
+            --accent-cyan: #4facfe;
+            --accent-glow: rgba(0, 242, 254, 0.35);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 242, 254, 0.22);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ==========================================================================
+           [SECTION 02] - إعادة الضبط العامة وسلاسة التمرير الخفيفة جداً (CSS Reset)
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-deep);
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* ==========================================================================
+           [SECTION 03] - الخلفية الثابتة الخفيفة (Cyberpunk Background)
+           ========================================================================== */
+        .cyber-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #020617;
+            z-index: -3;
+            pointer-events: none;
+        }
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: rgba(0, 242, 254, 0.06);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+            animation: orbFloat 8s ease-in-out infinite alternate;
+        }
+
+        .orb-1 { top: 2%; left: 5%; }
+        .orb-2 { bottom: 2%; right: 5%; animation-delay: -4s; }
+
+        @keyframes orbFloat {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(20px) scale(1.05); }
+        }
+
+        /* ==========================================================================
+           [SECTION 04] - الحاوية الرئيسية (Main Wrapper Layout)
+           ========================================================================== */
+        .wrapper {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+
+        /* ==========================================================================
+           [SECTION 05] - الهيدر الاحترافي وشعار العلامة التجارية (Header & Logo System)
+           ========================================================================== */
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: inline-block;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .logo {
+            width: 105px;
+            height: 105px;
+            object-fit: contain;
+            display: block;
+            border: none;
+            outline: none;
+            filter: drop-shadow(0 5px 15px rgba(0, 242, 254, 0.3));
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo:hover {
+            transform: scale(1.08) rotate(3deg);
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #ffffff 25%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            color: var(--accent-cyan);
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            font-family: 'Cairo', sans-serif;
+            margin-bottom: 18px;
+        }
+
+        /* خانة تسجيل الحساب / تسجيل الدخول المضافة تحت الوصف والاسم مباشرة */
+        .auth-action-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 24px;
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            color: var(--accent-blue);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 800;
+            border-radius: 30px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
+        .auth-action-box i {
+            font-size: 1rem;
+        }
+
+        .auth-action-box:hover {
+            background: rgba(0, 242, 254, 0.2);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           [SECTION 06] - شبكة البطاقات التفاعلية الرئيسية (Interactive Grid Cards)
+           ========================================================================== */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            padding: 26px 18px;
+            border-radius: 18px;
+            text-align: center;
+            border: 1px solid var(--border-glow);
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+            background: var(--bg-surface-hover);
+            box-shadow: 0 15px 30px rgba(0, 242, 254, 0.2);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 14px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 242, 254, 0.05);
+            border-radius: 50%;
+            border: 1px solid rgba(0, 242, 254, 0.12);
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* ==========================================================================
+           [SECTION 07] - صفحات المحتوى الديناميكية المحسنة (Dynamic Content Pages)
+           ========================================================================== */
+        .content-page {
+            display: none;
+            width: 100%;
+            max-width: 850px;
+            background: var(--bg-surface);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            border-radius: 22px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            margin: auto 0;
+            position: relative;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .content-page h2 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, #ffffff 25%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .content-page p, .content-page ul {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 22px;
+            text-align: right;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .content-page ul {
+            padding-right: 25px;
+        }
+
+        .content-page li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .content-page li strong {
+            color: var(--text-main);
+        }
+
+        /* شبكة الحسابات الرقمية المحسنة داخل الصفحة المخصصة */
+        .socials-grid-box {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 25px 0;
+            width: 100%;
+        }
+
+        .social-link-card {
+            background: rgba(0, 242, 254, 0.04);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            padding: 18px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: var(--transition-smooth);
+            text-align: right;
+        }
+
+        .social-link-card i {
+            font-size: 1.8rem;
+            color: var(--accent-blue);
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .social-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .social-info .platform-name {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+        }
+
+        .social-info .platform-handle {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            word-break: break-all;
+        }
+
+        .social-link-card:hover {
+            background: rgba(0, 242, 254, 0.12);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .dev-badge-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(0, 242, 254, 0.06);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 30px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: var(--bg-deep);
+            font-weight: 800;
+            font-size: 1rem;
+            border-radius: 35px;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* ==========================================================================
+           [SECTION 08] - الفوتر وأزرار الروابط الاحترافية (Footer & Utility Links)
+           ========================================================================== */
+        .footer {
+            text-align: center;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 20px;
+            background: var(--bg-surface);
+            border-radius: 30px;
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .footer a:hover {
+            color: #ffffff;
+            background: var(--bg-surface-hover);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .copyrights {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 1.5px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* حركات الانتقال الخفيفة والسلسة */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           [SECTION 10] - التجاوب الدقيق مع مختلف الأجهزة والشاشات (Media Queries)
+           ========================================================================== */
+        @media (max-width: 950px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            .socials-grid-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            body {
+                padding: 20px 12px;
+            }
+            .container {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .header h1 {
+                font-size: 2.1rem;
+            }
+            .card {
+                padding: 20px 14px;
+            }
+            .content-page {
+                padding: 25px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الخلفيات المرئية السينمائية -->
+    <div class="cyber-background"></div>
+    <div class="cyber-grid"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <div class="wrapper">
+        <!-- الهيدر الرئيسي للمنصة -->
+        <div class="header">
+            <div class="logo-container">
+                <img src="https://lh3.googleusercontent.com/d/1mZynmBXiBLIIXjNJ_66b0IGu7ZYJtO7C" class="logo" alt="KHBSR Logo">
+            </div>
+            <h1>KHBSR</h1>
+            <p>منصة البرمجة والتطوير الاحترافي والحلول التقنية المتقدمة</p>
+            <!-- خانة تسجيل الحساب / تسجيل الدخول المضافة تحت الوصف والاسم مباشرة -->
+            <a id="auth-action-box" class="auth-action-box" onclick="openDevPage('تسجيل الحساب')">
+                <i class="fa-solid fa-user-shield"></i> تسجيل الدخول / إنشاء حساب جديد
+            </a>
+        </div>
+        
+        <!-- القسم الرئيسي (واجهة البطاقات الأربع) -->
+        <div id="main-view" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <div class="container">
+                <!-- الخانة 1: طلب تطبيق -->
+                <a href="https://khaledbasri745-byte.github.io/KHBSR-Application-creation-request/" target="_blank" class="card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3>طلب تطبيق</h3>
+                    <p>حوّل فكرتك البرمجية إلى تطبيق رقمي متكامل بأعلى معايير الأداء والكفاءة.</p>
+                </a>
+
+                <!-- الخانة 2: الدورات التكوينية -->
+                <a href="https://khaledbasri745-byte.github.io/KHBSR-Register-for-a-training-course/" target="_blank" class="card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3>الدورات التكوينية</h3>
+                    <p>برامج تدريبية متقدمة تأخذ بيدك لاحتراف عالم البرمجة وتطوير الأنظمة الهندسية.</p>
+                </a>
+
+                <!-- الخانة 3: استشارة برمجية -->
+                <div class="card" onclick="openDevPage('استشارة برمجية')">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3>استشارة برمجية</h3>
+                    <p>استشارات تقنية وهندسية دقيقة لحل وتحسين بنية مشاريعك البرمجية باحترافية.</p>
+                </div>
+
+                <!-- الخانة 4: أبرز المشاريع -->
+                <a href="https://khaledbasri745-byte.github.io/KHBSR_APPS/" target="_blank" class="card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h3>أبرز المشاريع</h3>
+                    <p>استعرض سابقة أعمالنا الإبداعية والحلول البرمجية المبتكرة ذات التصميم الفريد.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- صفحة قيد التطوير (الموحدة الديناميكية) -->
+        <div id="dev-page" class="content-page">
+            <div class="dev-badge-box">
+                <i class="fa-solid fa-gears fa-spin"></i>
+                <span id="dev-code-status">حالة النظام: قيد التطوير والبناء</span>
+            </div>
+            <h2 id="dev-title">قيد التطوير</h2>
+            <p id="dev-desc">نعمل حالياً على تجهيز هذه الخدمة بأعلى معايير الجودة والاحترافية لتلبية تطلعاتكم التقنية قريباً.</p>
+            <button class="back-btn" onclick="goHome()"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</button>
+        </div>
+
+        <!-- صفحة الحسابات الرقمية والتواصل المباشر -->
+        <div id="socials-page" class="content-page">
+            <div class="dev-badge-box">
+                <i class="fa-solid fa-network-wired"></i>
+                <span>قنوات التواصل الرسمية لـ KHBSR</span>
+            </div>
+            <h2>حساباتنا الرقمية</h2>
+            <p>تواصل معنا مباشرة عبر قنواتنا الرسمية واستعرض أحدث الأكواد والتحديثات:</p>
+            
+            <div class="socials-grid-box">
+                <!-- البريد الإلكتروني -->
+                <a href="mailto:khaled.basri745@gmail.com" class="social-link-card">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div class="social-info">
+                        <span class="platform-name">البريد الإلكتروني</span>
+                        <span class="platform-handle">khaled.basri745@gmail.com</span>
+                    </div>
+                </a>
+
+                <!-- فيسبوك -->
+                <a href="https://www.facebook.com/share/1LhN9gfP46/" target="_blank" class="social-link-card">
+                    <i class="fa-brands fa-facebook"></i>
+                    <div class="social-info">
+                        <span class="platform-name">فيسبوك</span>
+                        <span class="platform-handle">Khaled Basri</span>
+                    </div>
+                </a>
+
+                <!-- واتساب -->
+                <a href="https://wa.me/qr/JW5SID6E6BGNL1" target="_blank" class="social-link-card">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <div class="social-info">
+                        <span class="platform-name">واتساب</span>
+                        <span class="platform-handle">تواصل مباشر سريع</span>
+                    </div>
+                </a>
+
+                <!-- تلغرام -->
+                <a href="https://t.me/khaledbasri" target="_blank" class="social-link-card">
+                    <i class="fa-brands fa-telegram"></i>
+                    <div class="social-info">
+                        <span class="platform-name">تلغرام</span>
+                        <span class="platform-handle">@khaledbasri</span>
+                    </div>
+                </a>
+            </div>
+
+            <button class="back-btn" onclick="goHome()"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</button>
+        </div>
+
+        <!-- صفحة سياسة الخصوصية والشفافية -->
+        <div id="privacy-page" class="content-page">
+            <div class="dev-badge-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>بروتوكول الأمان وخصوصية البيانات</span>
+            </div>
+            <h2>سياسة الخصوصية والشفافية</h2>
+            <p>نحن في منصة <strong>KHBSR</strong> نولي أهمية قصوى لحماية بياناتك ونلتزم التزاماً تاماً بالشفافية المطلقة فيما يخص جمع واستخدام المعلومات:</p>
+            <ul>
+                <li><strong>جمع البيانات:</strong> لا نقوم بجمع أي معلومات شخصية إلا ما يتم إدخاله طواعية بغرض تقديم الخدمات والاستشارات التقنية المتخصصة.</li>
+                <li><strong>حماية المعلومات:</strong> نستخدم أحدث أساليب التشفير وبروتوكولات الأمان الرقمي لحماية بيانات المستخدمين ومنع أي وصول غير مصرح به.</li>
+                <li><strong>الشفافية:</strong> جميع الخدمات والحلول البرمجية تخضع لمعايير اختبار صارمة لضمان تجربة مستخدم آمنة وموثوقة وعالية الأداء.</li>
+            </ul>
+            <button class="back-btn" onclick="goHome()"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</button>
+        </div>
+
+    </div>
+
+    <!-- الفوتر مع الروابط التفاعلية -->
+    <div class="footer">
+        <div class="footer-links" id="footer-links-container">
+            <a onclick="openSocialsPage()"><i class="fa-solid fa-share-nodes"></i> حساباتنا الرقمية</a>
+            <a onclick="openPrivacyPage()"><i class="fa-solid fa-shield-halved"></i> سياسة الخصوصية</a>
+        </div>
+        <div class="copyrights">
+            جميع الحقوق محفوظة &copy; KHBSR 2026
+        </div>
+    </div>
+
+    <!-- النواة البرمجية لإدارة الواجهات والتنقل الفوري الخفيف -->
+    <script>
+        const mainView = document.getElementById('main-view');
+        const devPage = document.getElementById('dev-page');
+        const socialsPage = document.getElementById('socials-page');
+        const privacyPage = document.getElementById('privacy-page');
+        const devTitle = document.getElementById('dev-title');
+        const devDesc = document.getElementById('dev-desc');
+        const devCodeStatus = document.getElementById('dev-code-status');
+        const authActionBox = document.getElementById('auth-action-box');
+        const footerLinksContainer = document.getElementById('footer-links-container');
+
+        function openDevPage(sectionName) {
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            authActionBox.style.display = 'none';
+            footerLinksContainer.style.display = 'none';
+            
+            devTitle.innerText = sectionName + " - قيد التطوير";
+            devDesc.innerText = `قسم "${sectionName}" موجود حالياً قيد التطوير والبناء الهندسي لتقديم تجربة مميزة ومخصصة لكم قريباً. ترقبوا التحديثات الحصرية!`;
+            devCodeStatus.innerText = `حالة النظام: ${sectionName} قيد التطوير`;
+            devPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openSocialsPage() {
+            mainView.style.display = 'none';
+            devPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            authActionBox.style.display = 'none';
+            footerLinksContainer.style.display = 'none';
+            
+            socialsPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openPrivacyPage() {
+            mainView.style.display = 'none';
+            devPage.style.display = 'none';
+            socialsPage.style.display = 'none';
+            authActionBox.style.display = 'none';
+            footerLinksContainer.style.display = 'none';
+            
+            privacyPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            devPage.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            mainView.style.display = 'block';
+            authActionBox.style.display = 'inline-flex';
+            footerLinksContainer.style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
