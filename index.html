@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>KHBSR | للبرمجة والتطوير الاحترافي - الإصدار السينمائي الفائق</title>
     <!-- استدعاء الخطوط العالمية المحدثة لضمان أعلى جودة للقراءة والوضوح -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=Fira+Code:wght@400;500;600&display=stylesheet" rel="stylesheet">
     <!-- استدعاء مكتبة الأيقونات العالمية FontAwesome الإصدار المتقدم -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -176,7 +176,6 @@
             margin-bottom: 18px;
         }
 
-        /* خانة تسجيل الحساب / تسجيل الدخول المضافة تحت الوصف والاسم مباشرة */
         .auth-action-box {
             display: inline-flex;
             align-items: center;
@@ -209,13 +208,18 @@
         /* ==========================================================================
            [SECTION 06] - شبكة البطاقات التفاعلية الرئيسية (Interactive Grid Cards)
            ========================================================================== */
-        .container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            width: 100%;
-            margin-bottom: 30px;
-            animation: fadeInUp 0.6s ease-out forwards;
+        .container {  
+            display: grid;  
+            grid-template-columns: repeat(2, 1fr);  
+            gap: 10px;  
+            width: 100%;  
+            margin-bottom: 10px;  
+            animation: fadeInUp 0.6s ease-out forwards;  
+            direction: rtl;
+        }
+
+        .container.full-width {
+            grid-template-columns: 1fr;
         }
 
         .card {
@@ -241,6 +245,24 @@
             border-color: var(--accent-blue);
             background: var(--bg-surface-hover);
             box-shadow: 0 15px 30px rgba(0, 242, 254, 0.2);
+        }
+
+        .status-dot {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px currentColor;
+        }
+        .status-dot.green {
+            background-color: #22c55e;
+            color: #22c55e;
+        }
+        .status-dot.red {
+            background-color: #ef4444;
+            color: #ef4444;
         }
 
         .card-icon {
@@ -325,7 +347,6 @@
             color: var(--text-main);
         }
 
-        /* شبكة الحسابات الرقمية المحسنة داخل الصفحة المخصصة */
         .socials-grid-box {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -420,6 +441,215 @@
             filter: brightness(1.1);
         }
 
+        .auth-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto 20px auto;
+            text-align: right;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
+        .submit-auth-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: var(--bg-deep);
+            font-weight: 800;
+            font-size: 1rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: 'Cairo', sans-serif;
+            margin-top: 5px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .submit-auth-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+        }
+
+        /* لوحة التحكم الاحترافية المنظمة (Professional Dashboard Layout) */
+        .user-dashboard-box {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            text-align: right;
+        }
+
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08), rgba(79, 172, 254, 0.03));
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            padding: 24px;
+            border-radius: 18px;
+            gap: 15px;
+        }
+
+        .user-avatar-badge {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: var(--bg-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+        }
+
+        .user-details-text h3 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        .user-details-text span {
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .dashboard-info-card {
+            background: rgba(2, 6, 23, 0.5);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dashboard-info-card h4 {
+            color: var(--accent-cyan);
+            font-size: 1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-info-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+            text-align: right;
+        }
+
+        .dashboard-actions-row {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .edit-profile-btn {
+            background: rgba(0, 242, 254, 0.15);
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            color: var(--accent-blue);
+            padding: 9px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: 'Cairo', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .edit-profile-btn:hover {
+            background: rgba(0, 242, 254, 0.3);
+        }
+
+        .logout-btn {
+            background: rgba(255, 75, 75, 0.15);
+            border: 1px solid rgba(255, 75, 75, 0.4);
+            color: #ff6b6b;
+            padding: 9px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: 'Cairo', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 75, 75, 0.3);
+        }
+
+        .download-progress-container {
+            width: 100%;
+            background: #020617;
+            border-radius: 10px;
+            height: 10px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            margin: 12px 0 6px 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .download-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+
+        .download-status-text {
+            font-size: 0.78rem;
+            color: var(--accent-cyan);
+            font-family: 'Fira Code', monospace;
+            text-align: left;
+            display: none;
+        }
+
         /* ==========================================================================
            [SECTION 08] - الفوتر وأزرار الروابط الاحترافية (Footer & Utility Links)
            ========================================================================== */
@@ -470,19 +700,18 @@
             font-family: 'Fira Code', monospace;
         }
 
-        /* حركات الانتقال الخفيفة والسلسة */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ==========================================================================
-           [SECTION 10] - التجاوب الدقيق مع مختلف الأجهزة والشاشات (Media Queries)
-           ========================================================================== */
         @media (max-width: 950px) {
             .container {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 16px;
+                gap: 10px;
+            }
+            .container.full-width {
+                grid-template-columns: 1fr;
             }
             .socials-grid-box {
                 grid-template-columns: 1fr;
@@ -494,17 +723,40 @@
                 padding: 20px 12px;
             }
             .container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .container.full-width {
                 grid-template-columns: 1fr;
-                gap: 14px;
+            }
+            .card {
+                padding: 16px 10px;
+            }
+            .card-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+            .card h3 {
+                font-size: 0.95rem;
+            }
+            .card p {
+                font-size: 0.75rem;
             }
             .header h1 {
                 font-size: 2.1rem;
             }
-            .card {
-                padding: 20px 14px;
-            }
             .content-page {
                 padding: 25px 16px;
+            }
+            .user-profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .dashboard-actions-row {
+                width: 100%;
+                justify-content: flex-start;
             }
         }
     </style>
@@ -525,26 +777,17 @@
             </div>
             <h1>KHBSR</h1>
             <p>منصة البرمجة والتطوير الاحترافي والحلول التقنية المتقدمة</p>
-            <!-- خانة تسجيل الحساب / تسجيل الدخول المضافة تحت الوصف والاسم مباشرة -->
-            <a id="auth-action-box" class="auth-action-box" onclick="openDevPage('تسجيل الحساب')">
-                <i class="fa-solid fa-user-shield"></i> تسجيل الدخول / إنشاء حساب جديد
+            <a id="auth-action-box" class="auth-action-box" onclick="openAuthPage()">
+                <i class="fa-solid fa-user-shield"></i> <span id="auth-box-text">تسجيل الدخول / إنشاء حساب</span>
             </a>
         </div>
         
-        <!-- القسم الرئيسي (واجهة البطاقات الأربع) -->
+        <!-- القسم الرئيسي (واجهة البطاقات المنظمة) -->
         <div id="main-view" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            
             <div class="container">
-                <!-- الخانة 1: طلب تطبيق -->
-                <a href="https://khaledbasri745-byte.github.io/KHBSR-Application-creation-request/" target="_blank" class="card">
-                    <div class="card-icon">
-                        <i class="fa-solid fa-code"></i>
-                    </div>
-                    <h3>طلب تطبيق</h3>
-                    <p>حوّل فكرتك البرمجية إلى تطبيق رقمي متكامل بأعلى معايير الأداء والكفاءة.</p>
-                </a>
-
-                <!-- الخانة 2: الدورات التكوينية -->
                 <a href="https://khaledbasri745-byte.github.io/KHBSR-Register-for-a-training-course/" target="_blank" class="card">
+                    <div class="status-dot green"></div>
                     <div class="card-icon">
                         <i class="fa-solid fa-laptop-code"></i>
                     </div>
@@ -552,24 +795,205 @@
                     <p>برامج تدريبية متقدمة تأخذ بيدك لاحتراف عالم البرمجة وتطوير الأنظمة الهندسية.</p>
                 </a>
 
-                <!-- الخانة 3: استشارة برمجية -->
-                <div class="card" onclick="openDevPage('استشارة برمجية')">
+                <a href="https://khaledbasri745-byte.github.io/KHBSR-Application-creation-request/" target="_blank" class="card">
+                    <div class="status-dot green"></div>
                     <div class="card-icon">
-                        <i class="fa-solid fa-headset"></i>
+                        <i class="fa-solid fa-code"></i>
                     </div>
-                    <h3>استشارة برمجية</h3>
-                    <p>استشارات تقنية وهندسية دقيقة لحل وتحسين بنية مشاريعك البرمجية باحترافية.</p>
+                    <h3>طلب تطبيق</h3>
+                    <p>حوّل فكرتك البرمجية إلى تطبيق رقمي متكامل بأعلى معايير الأداء والكفاءة.</p>
+                </a>
+            </div>
+
+            <div class="container">
+                <div class="card" onclick="openDevPage('البحوث الجامعية')">
+                    <div class="status-dot red"></div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-book-open-reader"></i>
+                    </div>
+                    <h3>البحوث الجامعية</h3>
+                    <p>إعداد وتنسيق الأبحاث والتقارير الأكاديمية والمقالات باحترافية ووفق المعايير العلمية.</p>
                 </div>
 
-                <!-- الخانة 4: أبرز المشاريع -->
                 <a href="https://khaledbasri745-byte.github.io/KHBSR_APPS/" target="_blank" class="card">
+                    <div class="status-dot green"></div>
                     <div class="card-icon">
                         <i class="fa-solid fa-rocket"></i>
                     </div>
-                    <h3>أبرز المشاريع</h3>
+                    <h3>المشاريع</h3>
                     <p>استعرض سابقة أعمالنا الإبداعية والحلول البرمجية المبتكرة ذات التصميم الفريد.</p>
                 </a>
             </div>
+
+            <div class="container">
+                <div class="card" onclick="openDevPage('الهوايات البصرية')">
+                    <div class="status-dot red"></div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <h3>الهوايات البصرية</h3>
+                    <p>تصميم شعارات مبتكرة وهويات متكاملة تعكس احترافية مشروعك بكل دقة وجمال.</p>
+                </div>
+
+                <div class="card" onclick="openDevPage('المونتاج والفيديوهات')">
+                    <div class="status-dot red"></div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <h3>المونتاج والفيديوهات</h3>
+                    <p>إنتاج ومونتاج فيديوهات سينمائية وترويجية احترافية تعزز حضور علامتك الرقمية.</p>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="card" onclick="openSketchwareBundlePage()">
+                    <div class="status-dot green"></div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-toolbox"></i>
+                    </div>
+                    <h3>حزمة سكيتشوير</h3>
+                    <p>تحميل مجموعة التطبيقات الأساسية لتطوير تطبيقات الأندرويد بدون كتابة كود معقد.</p>
+                </div>
+
+                <div class="card" onclick="openDevPage('مشاريع swb')">
+                    <div class="status-dot red"></div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-box-archive"></i>
+                    </div>
+                    <h3>مشاريع swb</h3>
+                    <p>استعرض وحمّل ملفات ومشاريع سكيتشوير بصيغة swb جاهزة للتعديل والتشغيل المباشر.</p>
+                </div>
+            </div>
+
+            <div class="container full-width">
+                <div class="card" onclick="openDevPage('بكالوريا محاسبة')">
+                    <div class="status-dot red"></div>
+                    <div class="card-icon">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <h3>بكالوريا محاسبة</h3>
+                    <p>ملخصات، تمارين، وحلول شاملة مخصصة لطلاب شعبة تسيير واقتصاد لضمان التفوق في امتحان البكالوريا.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- صفحة حساب المستخدم الاحترافية المنظمة (Auth & Dashboard Page) -->
+        <div id="auth-page" class="content-page">
+            <div class="dev-badge-box">
+                <i class="fa-solid fa-user-lock"></i>
+                <span id="auth-status-text">نظام إدارة الحسابات الآمن</span>
+            </div>
+            
+            <div id="login-view">
+                <h2 id="auth-form-title">تسجيل الدخول / إنشاء حساب</h2>
+                <p style="text-align: center;" id="auth-form-subtitle">أدخل بياناتك للاستفادة من الخدمات والميزات المتاحة عبر المنصة:</p>
+                
+                <div class="auth-form-container">
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-user"></i> اسم المستخدم الكامل</label>
+                        <input type="text" id="reg-name" placeholder="مثال: خالد بصري">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-envelope"></i> البريد الإلكتروني</label>
+                        <input type="email" id="reg-email" placeholder="khaled@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-key"></i> كلمة المرور الآمنة</label>
+                        <input type="password" id="reg-pass" placeholder="••••••••">
+                    </div>
+                    <button class="submit-auth-btn" id="auth-submit-btn" onclick="handleAuthSubmit()"><i class="fa-solid fa-right-to-bracket"></i> دخول / حفظ الحساب</button>
+                </div>
+            </div>
+
+            <!-- لوحة التحكم الاحترافية النظيفة -->
+            <div id="dashboard-view" class="user-dashboard-box">
+                <div class="user-profile-header">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="user-avatar-badge" id="user-avatar-initial">K</div>
+                        <div class="user-details-text">
+                            <h3 id="display-user-name">اسم المستخدم</h3>
+                            <span id="display-user-email">email@domain.com</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-actions-row">
+                        <button class="edit-profile-btn" onclick="openEditProfile()"><i class="fa-solid fa-user-pen"></i> تعديل</button>
+                        <button class="logout-btn" onclick="handleLogout()"><i class="fa-solid fa-power-off"></i> خروج</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-info-card">
+                    <h4><i class="fa-solid fa-circle-info"></i> معلومات الحساب وبيئة العمل</h4>
+                    <p>أهلاً بك في لوحة التحكم الخاصة بك ضمن منصة <strong>KHBSR</strong>. من هنا يمكنك إدارة بياناتك الشخصية ومتابعة طلباتك واستشاراتك البرمجية بكل سهولة وأمان.</p>
+                </div>
+            </div>
+
+            <button class="back-btn" onclick="goHome()" style="margin-top: 20px;"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</button>
+        </div>
+
+        <!-- صفحة حزمة تطبيقات سكيتشوير الاحترافية الجديدة -->
+        <div id="sketchware-bundle-page" class="content-page">
+            <div class="dev-badge-box">
+                <i class="fa-solid fa-toolbox"></i>
+                <span>حزمة أدوات وتطبيقات سكيتشوير الاحترافية</span>
+            </div>
+            <h2>حزمة سكيتشوير الشاملة</h2>
+            <p>اختر التطبيق المناسب لاستعراض معلوماته الكاملة والبدء في تحميله:</p>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; margin: 20px 0;">
+                
+                <div class="card" style="cursor: pointer; margin: 0;" onclick="openAppDetail('تطبيق سكيتشوير الأساسي', 'البيئة الإنشائية المتكاملة لتصميم وتطوير تطبيقات الأندرويد بدون كتابة كود معقد، تتيح لك بناء واجهات المستخدم والتحكم بالمنطق عبر البلوكات.', 'https://docs.google.com/uc?export=download&id=1p4i8cNGRGB3huUAC6wQHeoGvQZnCx7_n')">
+                    <div class="card-icon" style="width: 50px; height: 50px; font-size: 1.5rem; margin-bottom: 10px;">
+                        <i class="fa-brands fa-android"></i>
+                    </div>
+                    <h3 style="font-size: 1rem; margin-bottom: 6px;">تطبيق سكيتشوير الأساسي</h3>
+                    <p style="font-size: 0.78rem;">عرض التفاصيل وتحميل التطبيق</p>
+                </div>
+
+                <div class="card" style="cursor: pointer; margin: 0;" onclick="openAppDetail('مستعرض ملفات سكيتشوير', 'مستعرض مخصص وعالي الأداء لإدارة وتصفح ملفات ومجلدات مشاريع سكيتشوير على هاتفك بسهولة تامة.', 'https://docs.google.com/uc?export=download&id=1p5NPYja_P9lvx7DYWOr8qn5MCzm_ySsX')">
+                    <div class="card-icon" style="width: 50px; height: 50px; font-size: 1.5rem; margin-bottom: 10px;">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <h3 style="font-size: 1rem; margin-bottom: 6px;">مستعرض ملفات سكيتشوير</h3>
+                    <p style="font-size: 0.78rem;">عرض التفاصيل وتحميل التطبيق</p>
+                </div>
+
+                <div class="card" style="cursor: pointer; margin: 0;" onclick="openAppDetail('بلوكات سكيتشوير', 'مكتبة إضافية فريدة تضم مجموعة ضخمة من البلوكات والوظائف البرمجية الجاهزة لتوسيع إمكانيات مشاريعك.', 'https://docs.google.com/uc?export=download&id=1pDFC8nYSUfGgxaOg9xgVTU91RtprAJol')">
+                    <div class="card-icon" style="width: 50px; height: 50px; font-size: 1.5rem; margin-bottom: 10px;">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                    </div>
+                    <h3 style="font-size: 1rem; margin-bottom: 6px;">بلوكات سكيتشوير</h3>
+                    <p style="font-size: 0.78rem;">عرض التفاصيل وتحميل التطبيق</p>
+                </div>
+
+                <div class="card" style="cursor: pointer; margin: 0;" onclick="openAppDetail('أكواد سكيتشوير', 'مرجع احترافي شامل يضم أشهر الأكواد البرمجية بلغة جافا والحلول التقنية لاستخدامها مباشرة داخل مشاريعك.', 'https://docs.google.com/uc?export=download&id=1p82B7baSrX451dYb0qDha0e9rSumYggM')">
+                    <div class="card-icon" style="width: 50px; height: 50px; font-size: 1.5rem; margin-bottom: 10px;">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 style="font-size: 1rem; margin-bottom: 6px;">أكواد سكيتشوير</h3>
+                    <p style="font-size: 0.78rem;">عرض التفاصيل وتحميل التطبيق</p>
+                </div>
+
+            </div>
+            <button class="back-btn" onclick="goHome()" style="margin-top: 15px;"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</button>
+        </div>
+
+        <!-- صفحة تفاصيل التطبيق الفردي ضمن الحزمة -->
+        <div id="app-detail-page" class="content-page">
+            <div class="dev-badge-box">
+                <i class="fa-solid fa-circle-info"></i>
+                <span id="detail-badge-text">معلومات التطبيق الرسمي</span>
+            </div>
+            <h2 id="detail-app-title">عنوان التطبيق</h2>
+            <p id="detail-app-desc" style="text-align: right; margin-bottom: 25px;">وصف تفصيلي شامل للتطبيق وخصائصه.</p>
+            
+            <div class="dashboard-info-card" style="text-align: center; margin-bottom: 25px; align-items: center;">
+                <h4 style="justify-content: center; margin-bottom: 15px;"><i class="fa-solid fa-download"></i> رابط التحميل المباشر الآمن</h4>
+                <button class="back-btn" id="detail-download-btn" style="width: 100%; justify-content: center;" onclick=""><i class="fa-solid fa-cloud-arrow-down"></i> تحميل التطبيق الآن</button>
+                <div class="download-progress-container" id="detail-prog-container"><div class="download-progress-bar" id="detail-prog-bar"></div></div>
+                <div class="download-status-text" id="detail-status-text" style="text-align: center;">جاهز للتحميل...</div>
+            </div>
+
+            <button class="back-btn" onclick="openSketchwareBundlePage()"><i class="fa-solid fa-arrow-right"></i> العودة للحزمة</button>
         </div>
 
         <!-- صفحة قيد التطوير (الموحدة الديناميكية) -->
@@ -593,7 +1017,6 @@
             <p>تواصل معنا مباشرة عبر قنواتنا الرسمية واستعرض أحدث الأكواد والتحديثات:</p>
             
             <div class="socials-grid-box">
-                <!-- البريد الإلكتروني -->
                 <a href="mailto:khaled.basri745@gmail.com" class="social-link-card">
                     <i class="fa-solid fa-envelope"></i>
                     <div class="social-info">
@@ -602,7 +1025,6 @@
                     </div>
                 </a>
 
-                <!-- فيسبوك -->
                 <a href="https://www.facebook.com/share/1LhN9gfP46/" target="_blank" class="social-link-card">
                     <i class="fa-brands fa-facebook"></i>
                     <div class="social-info">
@@ -611,7 +1033,6 @@
                     </div>
                 </a>
 
-                <!-- واتساب -->
                 <a href="https://wa.me/qr/JW5SID6E6BGNL1" target="_blank" class="social-link-card">
                     <i class="fa-brands fa-whatsapp"></i>
                     <div class="social-info">
@@ -620,7 +1041,6 @@
                     </div>
                 </a>
 
-                <!-- تلغرام -->
                 <a href="https://t.me/khaledbasri" target="_blank" class="social-link-card">
                     <i class="fa-brands fa-telegram"></i>
                     <div class="social-info">
@@ -642,11 +1062,24 @@
             <h2>سياسة الخصوصية والشفافية</h2>
             <p>نحن في منصة <strong>KHBSR</strong> نولي أهمية قصوى لحماية بياناتك ونلتزم التزاماً تاماً بالشفافية المطلقة فيما يخص جمع واستخدام المعلومات:</p>
             <ul>
-                <li><strong>جمع البيانات:</strong> لا نقوم بجمع أي معلومات شخصية إلا ما يتم إدخاله طواعية بغرض تقديم الخدمات والاستشارات التقنية المتخصصة.</li>
+                <li><strong>جمع البيانات:</strong> لا نقوم بجمع أي معلومات شخصية إلا ما يتم إدخاله طواعية بغرض تقديم الخدمات والاستشارات التقنية المتخصصـة.</li>
                 <li><strong>حماية المعلومات:</strong> نستخدم أحدث أساليب التشفير وبروتوكولات الأمان الرقمي لحماية بيانات المستخدمين ومنع أي وصول غير مصرح به.</li>
                 <li><strong>الشفافية:</strong> جميع الخدمات والحلول البرمجية تخضع لمعايير اختبار صارمة لضمان تجربة مستخدم آمنة وموثوقة وعالية الأداء.</li>
             </ul>
             <button class="back-btn" onclick="goHome()"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</button>
+        </div>
+
+        <!-- صفحة حول الموقع الشاملة (About KHBSR) -->
+        <div id="about-page" class="content-page">
+            <div class="dev-badge-box">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>الدليل الشامل حول منصة KHBSR</span>
+            </div>
+            <h2>حول الموقع ومؤسسه</h2>
+            <p>منصة <strong>KHBSR</strong> هي وجهتك الرقمية المتقدمة والمتكاملة للبرمجة وتطوير تطبيقات الهواتف الذكية وتوفير الأكواد والمشاريع الجاهزة، مصممة خصيصاً لمساعدة المطورين وشغوفي التقنية في بناء وتطوير مشاريعهم بكل احترافية وسهولة.</p>
+            <p><strong>مؤسس ومطور الموقع:</strong> خالد بصري (Khaled Basri), مطور برمجيات مهتم بتقنيات الويب وتطبيقات الأندرويد وبيئة سكيتشوير.</p>
+            <p>يمكنكم التواصل معنا مباشرة ومراسلتنا لأي استفسار أو طلب عبر البريد الإلكتروني الرسمي: <a href="mailto:khaled.basri745@gmail.com" style="color: var(--accent-blue); text-decoration: underline;">khaled.basri745@gmail.com</a></p>
+            <button class="back-btn" onclick="goHome()" style="margin-top: 15px;"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</button>
         </div>
 
     </div>
@@ -654,6 +1087,7 @@
     <!-- الفوتر مع الروابط التفاعلية -->
     <div class="footer">
         <div class="footer-links" id="footer-links-container">
+            <a onclick="openAboutPage()"><i class="fa-solid fa-circle-info"></i> حول الموقع</a>
             <a onclick="openSocialsPage()"><i class="fa-solid fa-share-nodes"></i> حساباتنا الرقمية</a>
             <a onclick="openPrivacyPage()"><i class="fa-solid fa-shield-halved"></i> سياسة الخصوصية</a>
         </div>
@@ -668,16 +1102,223 @@
         const devPage = document.getElementById('dev-page');
         const socialsPage = document.getElementById('socials-page');
         const privacyPage = document.getElementById('privacy-page');
+        const authPage = document.getElementById('auth-page');
+        const sketchwareBundlePage = document.getElementById('sketchware-bundle-page');
+        const appDetailPage = document.getElementById('app-detail-page');
+        const aboutPage = document.getElementById('about-page');
         const devTitle = document.getElementById('dev-title');
         const devDesc = document.getElementById('dev-desc');
         const devCodeStatus = document.getElementById('dev-code-status');
         const authActionBox = document.getElementById('auth-action-box');
+        const authBoxText = document.getElementById('auth-box-text');
         const footerLinksContainer = document.getElementById('footer-links-container');
+        
+        const loginView = document.getElementById('login-view');
+        const dashboardView = document.getElementById('dashboard-view');
+        const displayUserName = document.getElementById('display-user-name');
+        const displayUserEmail = document.getElementById('display-user-email');
+        const userAvatarInitial = document.getElementById('user-avatar-initial');
+        const authFormTitle = document.getElementById('auth-form-title');
+        const authFormSubtitle = document.getElementById('auth-form-subtitle');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+
+        let isEditingProfile = false;
+
+        let currentUser = localStorage.getItem('khbsr_user_name');
+        let currentEmail = localStorage.getItem('khbsr_user_email');
+        if(currentUser) {
+            authBoxText.innerText = `حسابي: ${currentUser}`;
+        }
+
+        function openAuthPage() {
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            authActionBox.style.display = 'none';
+            footerLinksContainer.style.display = 'none';
+            
+            if(localStorage.getItem('khbsr_user_name') && !isEditingProfile) {
+                loginView.style.display = 'none';
+                dashboardView.style.display = 'flex';
+                const nameVal = localStorage.getItem('khbsr_user_name');
+                displayUserName.innerText = nameVal;
+                displayUserEmail.innerText = localStorage.getItem('khbsr_user_email');
+                userAvatarInitial.innerText = nameVal.charAt(0).toUpperCase();
+            } else {
+                loginView.style.display = 'block';
+                dashboardView.style.display = 'none';
+                if(isEditingProfile) {
+                    authFormTitle.innerText = "تعديل بيانات الحساب";
+                    authFormSubtitle.innerText = "قم بتحديث معلومات حسابك الشخصي والبريد الإلكتروني:";
+                    authSubmitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات';
+                    document.getElementById('reg-name').value = localStorage.getItem('khbsr_user_name') || '';
+                    document.getElementById('reg-email').value = localStorage.getItem('khbsr_user_email') || '';
+                    document.getElementById('reg-pass').value = '';
+                } else {
+                    authFormTitle.innerText = "تسجيل الدخول / إنشاء حساب";
+                    authFormSubtitle.innerText = "أدخل بياناتك للاستفادة من الخدمات والميزات المتاحة عبر المنصة:";
+                    authSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول / حفظ الحساب';
+                }
+            }
+
+            authPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openEditProfile() {
+            isEditingProfile = true;
+            dashboardView.style.display = 'none';
+            loginView.style.display = 'block';
+            authFormTitle.innerText = "تعديل بيانات الحساب";
+            authFormSubtitle.innerText = "قم بتحديث معلومات حسابك الشخصي والبريد الإلكتروني:";
+            authSubmitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات';
+            document.getElementById('reg-name').value = localStorage.getItem('khbsr_user_name') || '';
+            document.getElementById('reg-email').value = localStorage.getItem('khbsr_user_email') || '';
+            document.getElementById('reg-pass').value = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function handleAuthSubmit() {
+            const nameInput = document.getElementById('reg-name').value.trim();
+            const emailInput = document.getElementById('reg-email').value.trim();
+            const passInput = document.getElementById('reg-pass').value.trim();
+
+            if(!nameInput || !emailInput || (!passInput && !isEditingProfile)) {
+                alert('يرجى ملء الحقول المطلوبة للاستمرار.');
+                return;
+            }
+
+            localStorage.setItem('khbsr_user_name', nameInput);
+            localStorage.setItem('khbsr_user_email', emailInput);
+
+            authBoxText.innerText = `حسابي: ${nameInput}`;
+            isEditingProfile = false;
+            
+            loginView.style.display = 'none';
+            dashboardView.style.display = 'flex';
+            displayUserName.innerText = nameInput;
+            displayUserEmail.innerText = emailInput;
+            userAvatarInitial.innerText = nameInput.charAt(0).toUpperCase();
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('khbsr_user_name');
+            localStorage.removeItem('khbsr_user_email');
+            isEditingProfile = false;
+            authBoxText.innerText = 'تسجيل الدخول / إنشاء حساب';
+            dashboardView.style.display = 'none';
+            loginView.style.display = 'block';
+            authFormTitle.innerText = "تسجيل الدخول / إنشاء حساب";
+            authFormSubtitle.innerText = "أدخل بياناتك للاستفادة من الخدمات والميزات المتاحة عبر المنصة:";
+            authSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول / حفظ الحساب';
+            document.getElementById('reg-name').value = '';
+            document.getElementById('reg-email').value = '';
+            document.getElementById('reg-pass').value = '';
+        }
+
+        function openSketchwareBundlePage() {
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            authActionBox.style.display = 'none';
+            footerLinksContainer.style.display = 'none';
+            
+            sketchwareBundlePage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openAppDetail(appName, appDesc, downloadUrl) {
+            sketchwareBundlePage.style.display = 'none';
+            
+            document.getElementById('detail-app-title').innerText = appName;
+            document.getElementById('detail-app-desc').innerText = appDesc;
+            document.getElementById('detail-badge-text').innerText = `تفاصيل ومعلومات ${appName}`;
+            
+            const dlBtn = document.getElementById('detail-download-btn');
+            dlBtn.setAttribute('onclick', `startDownload('${downloadUrl}', 'detail-prog-bar', 'detail-status-text', this)`);
+            
+            document.getElementById('detail-prog-container').style.display = 'none';
+            document.getElementById('detail-status-text').style.display = 'none';
+            document.getElementById('detail-prog-bar').style.width = '0%';
+            document.getElementById('detail-status-text').innerText = 'جاهز للتحميل...';
+            
+            appDetailPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function startDownload(url, barId, statusId, btnElement) {
+            const container = document.getElementById(barId === 'detail-prog-bar' ? 'detail-prog-container' : barId + '-container');
+            const bar = document.getElementById(barId);
+            const status = document.getElementById(statusId);
+            
+            if(container) container.style.display = 'block';
+            if(status) status.style.display = 'block';
+            if(btnElement) {
+                btnElement.style.pointerEvents = 'none';
+                btnElement.style.opacity = '0.6';
+            }
+            
+            let progress = 0;
+            if(status) status.innerText = 'جارِ بدء الاتصال بالخادم... (0%)';
+            
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 8) + 3;
+                if(progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    if(bar) bar.style.width = '100%';
+                    if(status) status.innerText = 'اكتمل التحميل بنجاح! جارِ تنزيل الملف...';
+                    setTimeout(() => {
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = '';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        
+                        if(btnElement) {
+                            btnElement.style.pointerEvents = 'auto';
+                            btnElement.style.opacity = '1';
+                        }
+                    }, 800);
+                } else {
+                    if(bar) bar.style.width = progress + '%';
+                    if(status) status.innerText = `جارِ التحميل... (${progress}%)`;
+                }
+            }, 120);
+        }
+
+        function openAboutPage() {
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            authActionBox.style.display = 'none';
+            footerLinksContainer.style.display = 'none';
+            
+            aboutPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         function openDevPage(sectionName) {
             mainView.style.display = 'none';
             socialsPage.style.display = 'none';
             privacyPage.style.display = 'none';
+            authPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
             authActionBox.style.display = 'none';
             footerLinksContainer.style.display = 'none';
             
@@ -691,7 +1332,11 @@
         function openSocialsPage() {
             mainView.style.display = 'none';
             devPage.style.display = 'none';
-            privacyPage.style.display = 'none';
+            privacyPage.style.display, 'none';
+            authPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
             authActionBox.style.display = 'none';
             footerLinksContainer.style.display = 'none';
             
@@ -703,6 +1348,10 @@
             mainView.style.display = 'none';
             devPage.style.display = 'none';
             socialsPage.style.display = 'none';
+            authPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
             authActionBox.style.display = 'none';
             footerLinksContainer.style.display = 'none';
             
@@ -711,9 +1360,14 @@
         }
 
         function goHome() {
+            isEditingProfile = false;
             devPage.style.display = 'none';
             socialsPage.style.display = 'none';
             privacyPage.style.display = 'none';
+            authPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
             mainView.style.display = 'block';
             authActionBox.style.display = 'inline-flex';
             footerLinksContainer.style.display = 'flex';
