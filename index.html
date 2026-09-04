@@ -581,26 +581,6 @@
             flex-wrap: wrap;
         }
 
-        .edit-profile-btn {
-            background: rgba(0, 242, 254, 0.15);
-            color: var(--accent-blue);
-            padding: 9px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            font-family: 'Cairo', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            border: none;
-        }
-
-        .edit-profile-btn:hover {
-            background: rgba(0, 242, 254, 0.3);
-        }
-
         .logout-btn {
             background: rgba(255, 75, 75, 0.15);
             color: #ff6b6b;
@@ -1127,7 +1107,7 @@
             <button class="back-btn" onclick="goHome()" style="margin-top: 20px;"><i class="fa-solid fa-arrow-right"></i> العودة للرئيسية</button>
         </div>
 
-        <!-- صفحة التسجيل في الدورات التكوينية المستوحاة من الملف المرفق -->
+        <!-- صفحة التسجيل في الدورات التكوينية -->
         <div id="training-page" class="content-page" style="max-width: 800px; text-align: right;">
             <div class="dev-badge-box" style="margin: 0 auto 20px auto; display: flex;">
                 <i class="fa-solid fa-laptop-code"></i>
@@ -1648,24 +1628,28 @@
         </div>
     </div>
 
-    <!-- Firebase SDK (v9 Modular عبر CDN) -->
+    <!-- Firebase SDK (v12 Modular عبر CDN المحدث) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-        // إعدادات فايرباس (تأكد من استبدالها ببيانات مشروعك الفعلية إذا لزم الأمر)
+        // إعدادات فايرباس الخاصة بك
         const firebaseConfig = {
-            apiKey: "AIzaSyD-EXAMPLE-API-KEY-KHBS-R",
-            authDomain: "khbsr-platform.firebaseapp.com",
-            projectId: "khbsr-platform",
-            storageBucket: "khbsr-platform.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef123456789"
+            apiKey: "AIzaSyB8Z69yhGbmOxSQEcMovHYTjAlJru85KNA",
+            authDomain: "khbsr-17e58.firebaseapp.com",
+            databaseURL: "https://khbsr-17e58-default-rtdb.firebaseio.com",
+            projectId: "khbsr-17e58",
+            storageBucket: "khbsr-17e58.firebasestorage.app",
+            messagingSenderId: "230844830659",
+            appId: "1:230844830659:web:354566b8cd1157358f2376",
+            measurementId: "G-F0HKHG16E2"
         };
 
         // تهيئة Firebase
         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
@@ -2025,208 +2009,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        async function handleAppRequestSubmit(event) {
-            event.preventDefault();
-            
-            const submitBtn = document.getElementById('app-req-submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال وحفظ البيانات في قاعدة البيانات...';
-
-            const formData = {
-                الاسم: document.getElementById('app-req-name').value.trim(),
-                البريد_الالكتروني: document.getElementById('app-req-email').value.trim(),
-                رقم_الهاتف: document.getElementById('app-req-phone').value.trim(),
-                فكرة_المشروع: document.getElementById('app-req-idea').value,
-                المستخدمون: document.getElementById('app-req-users').value,
-                لوحة_تحكم: document.getElementById('app-req-dashboard').value,
-                قاعدة_بيانات_firebase: document.getElementById('app-req-firebase').value,
-                ربطه_بموقع: document.getElementById('app-req-linksite').value,
-                مدة_الانتاج: document.getElementById('app-req-duration').value.trim(),
-                createdAt: new Date().toISOString()
-            };
-
-            try {
-                if (window.firebaseDb && window.firebaseFns) {
-                    const reqRef = window.firebaseFns.doc(window.firebaseDb, "appRequests", `${Date.now()}_${formData.رقم_الهاتف}`);
-                    await window.firebaseFns.setDoc(reqRef, formData);
-                }
-
-                const response = await fetch('https://formspree.io/f/mrendbkv', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    localStorage.setItem('khbsr_app_request_submitted', 'true');
-                    document.getElementById('app-request-form').style.display = 'none';
-                    document.getElementById('app-req-success-msg').style.display = 'block';
-                } else {
-                    alert('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مرة أخرى.');
-                }
-            } catch (error) {
-                alert('تعذر الاتصال بالخادم، تحقق من اتصالك بالإنترنت.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال طلب المشروع';
-            }
-        }
-
-        async function handleTrainingSubmit(event) {
-            event.preventDefault();
-            
-            const submitBtn = document.getElementById('train-submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال وحفظ البيانات في قاعدة البيانات...';
-
-            const formData = {
-                الاسم_الكامل: document.getElementById('train-name').value.trim(),
-                البريد_الالكتروني: document.getElementById('train-email').value.trim(),
-                رقم_الهاتف: document.getElementById('train-phone').value.trim(),
-                مستوى_الخبرة: document.getElementById('train-level').value,
-                الباقة_ومدة_التكوين: document.getElementById('train-package').value,
-                ملاحظات: document.getElementById('train-notes').value.trim(),
-                createdAt: new Date().toISOString()
-            };
-
-            try {
-                if (window.firebaseDb && window.firebaseFns) {
-                    const trainRef = window.firebaseFns.doc(window.firebaseDb, "trainingRequests", `${Date.now()}_${formData.رقم_الهاتف}`);
-                    await window.firebaseFns.setDoc(trainRef, formData);
-                }
-
-                const response = await fetch('https://formspree.io/f/mrendbkv', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    localStorage.setItem('khbsr_training_submitted', 'true');
-                    document.getElementById('training-form').style.display = 'none';
-                    document.getElementById('training-success-msg').style.display = 'block';
-                } else {
-                    alert('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة مرة أخرى.');
-                }
-            } catch (error) {
-                alert('تعذر الاتصال بالخادم، تحقق من اتصالك بالإنترنت.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال طلب التسجيل';
-            }
-        }
-
-        function openAccountingPage() {
-            navigateToSubpage();
-            mainView.style.display = 'none';
-            socialsPage.style.display = 'none';
-            privacyPage.style.display = 'none';
-            devPage.style.display = 'none';
-            authPage.style.display = 'none';
-            projectsPage.style.display = 'none';
-            sketchwareBundlePage.style.display = 'none';
-            appDetailPage.style.display = 'none';
-            aboutPage.style.display = 'none';
-            trainingPage.style.display = 'none';
-            appRequestPage.style.display = 'none';
-            
-            hideHeaderAndFooter();
-            accountingPage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openProjectsPage() {
-            navigateToSubpage();
-            mainView.style.display = 'none';
-            socialsPage.style.display = 'none';
-            privacyPage.style.display = 'none';
-            devPage.style.display = 'none';
-            authPage.style.display = 'none';
-            accountingPage.style.display = 'none';
-            sketchwareBundlePage.style.display = 'none';
-            appDetailPage.style.display = 'none';
-            aboutPage.style.display = 'none';
-            trainingPage.style.display = 'none';
-            appRequestPage.style.display = 'none';
-            
-            hideHeaderAndFooter();
-            projectsPage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openSketchwareBundlePage() {
-            navigateToSubpage();
-            mainView.style.display = 'none';
-            socialsPage.style.display = 'none';
-            privacyPage.style.display = 'none';
-            devPage.style.display = 'none';
-            authPage.style.display = 'none';
-            accountingPage.style.display = 'none';
-            projectsPage.style.display = 'none';
-            appDetailPage.style.display = 'none';
-            aboutPage.style.display = 'none';
-            trainingPage.style.display = 'none';
-            appRequestPage.style.display = 'none';
-            
-            hideHeaderAndFooter();
-            sketchwareBundlePage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openAppDetail(title, desc, downloadUrl) {
-            navigateToSubpage();
-            sketchwareBundlePage.style.display = 'none';
-            document.getElementById('detail-app-title').innerText = title;
-            document.getElementById('detail-app-desc').innerText = desc;
-            
-            const downloadBtn = document.getElementById('detail-download-btn');
-            const progContainer = document.getElementById('detail-prog-container');
-            const progBar = document.getElementById('detail-prog-bar');
-            const statusText = document.getElementById('detail-status-text');
-
-            progContainer.style.display = 'none';
-            statusText.style.display = 'none';
-            progBar.style.width = '0%';
-
-            downloadBtn.onclick = () => {
-                progContainer.style.display = 'block';
-                statusText.style.display = 'block';
-                downloadBtn.style.pointerEvents = 'none';
-                downloadBtn.style.opacity = '0.7';
-
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 2;
-                    progBar.style.width = progress + '%';
-                    statusText.innerText = `جاري تجهيز التحميل الآمن... (${progress}%)`;
-
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        statusText.innerText = 'تم بدء التحميل بنجاح!';
-                        downloadBtn.style.pointerEvents = 'auto';
-                        downloadBtn.style.opacity = '1';
-
-                        const anchor = document.createElement('a');
-                        anchor.href = downloadUrl;
-                        anchor.target = '_blank';
-                        anchor.download = '';
-                        document.body.appendChild(anchor);
-                        anchor.click();
-                        document.body.removeChild(anchor);
-                    }
-                }, 40);
-            };
-
-            appDetailPage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
         function openDevPage(titleText) {
             navigateToSubpage();
             mainView.style.display = 'none';
@@ -2243,7 +2025,8 @@
             
             hideHeaderAndFooter();
             devTitle.innerText = titleText;
-            devDesc.innerText = `قسم "${titleText}" قيد التطوير والتجهيز حالياً ضمن منصة KHBSR لنقدمه لكم بأعلى مستويات الابتكار قريباً.`;
+            devDesc.innerText = `قسم "${titleText}" قيد التطوير والتحديث المستمر لنقدم لكم أفضل تجربة برمجية واحترافية قريباً.`;
+            devCodeStatus.innerText = `حالة النظام: جاري إنجاز ${titleText}`;
             devPage.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -2305,6 +2088,121 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        function openAccountingPage() {
+            navigateToSubpage();
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            projectsPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            trainingPage.style.display = 'none';
+            appRequestPage.style.display = 'none';
+            
+            hideHeaderAndFooter();
+            accountingPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openProjectsPage() {
+            navigateToSubpage();
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            accountingPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            trainingPage.style.display = 'none';
+            appRequestPage.style.display = 'none';
+            
+            hideHeaderAndFooter();
+            projectsPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openSketchwareBundlePage() {
+            navigateToSubpage();
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            accountingPage.style.display = 'none';
+            projectsPage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            trainingPage.style.display = 'none';
+            appRequestPage.style.display = 'none';
+            
+            hideHeaderAndFooter();
+            sketchwareBundlePage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openAppDetail(title, desc, downloadLink) {
+            navigateToSubpage();
+            sketchwareBundlePage.style.display = 'none';
+            document.getElementById('detail-app-title').innerText = title;
+            document.getElementById('detail-app-desc').innerText = desc;
+            document.getElementById('detail-badge-text').innerText = `تفاصيل التحميل الرسمي: ${title}`;
+            
+            const downloadBtn = document.getElementById('detail-download-btn');
+            downloadBtn.onclick = function() {
+                startSecureDownload(downloadLink, title);
+            };
+            
+            document.getElementById('detail-prog-container').style.display = 'none';
+            document.getElementById('detail-prog-bar').style.width = '0%';
+            document.getElementById('detail-status-text').style.display = 'none';
+
+            appDetailPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function startSecureDownload(url, appName) {
+            const progContainer = document.getElementById('detail-prog-container');
+            const progBar = document.getElementById('detail-prog-bar');
+            const statusText = document.getElementById('detail-status-text');
+            const downloadBtn = document.getElementById('detail-download-btn');
+
+            downloadBtn.style.pointerEvents = 'none';
+            downloadBtn.style.opacity = '0.7';
+            progContainer.style.display = 'block';
+            statusText.style.display = 'block';
+            statusText.innerText = `جاري تحضير ملف ${appName} للتحميل الآمن...`;
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progBar.style.width = progress + '%';
+                if(progress === 30) {
+                    statusText.innerText = 'جاري الاتصال بخوادم التنزيل السريعة...';
+                } else if(progress === 70) {
+                    statusText.innerText = 'جاري ضغط وحزم البيانات...';
+                }
+                if(progress >= 100) {
+                    clearInterval(interval);
+                    statusText.innerText = 'تم بدء التحميل بنجاح!';
+                    downloadBtn.style.pointerEvents = 'auto';
+                    downloadBtn.style.opacity = '1';
+                    
+                    const hiddenAnchor = document.createElement('a');
+                    hiddenAnchor.href = url;
+                    hiddenAnchor.target = '_blank';
+                    hiddenAnchor.download = '';
+                    document.body.appendChild(hiddenAnchor);
+                    hiddenAnchor.click();
+                    document.body.removeChild(hiddenAnchor);
+                }
+            }, 80);
+        }
+
         function openAccountingModal(title, text) {
             document.getElementById('accModalTitle').innerText = title;
             document.getElementById('accModalText').innerText = text;
@@ -2316,12 +2214,83 @@
         }
 
         function openUnderConstructionModal(projectName) {
-            document.getElementById('constructionModalText').innerText = `"${projectName}" قيد الانجاز حالياً، وسيتم إطلاقه قريباً ضمن مشاريع منصة KHBSR!`;
+            document.getElementById('constructionModalText').innerText = `مشروع "${projectName}" قيد الانجاز حالياً وسيتم إطلاقه رسمياً في موعده المحدد.`;
             document.getElementById('underConstructionModal').style.display = 'flex';
         }
 
         function closeUnderConstructionModal() {
             document.getElementById('underConstructionModal').style.display = 'none';
+        }
+
+        async function handleTrainingSubmit(event) {
+            event.preventDefault();
+            const submitBtn = document.getElementById('train-submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الطلب...';
+
+            const formData = {
+                name: document.getElementById('train-name').value.trim(),
+                email: document.getElementById('train-email').value.trim(),
+                phone: document.getElementById('train-phone').value.trim(),
+                level: document.getElementById('train-level').value,
+                package: document.getElementById('train-package').value,
+                notes: document.getElementById('train-notes').value.trim(),
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                if(window.firebaseDb && window.firebaseFns) {
+                    const reqDocRef = window.firebaseFns.doc(window.firebaseDb, "training_requests", `${formData.email}_${Date.now()}`);
+                    await window.firebaseFns.setDoc(reqDocRef, formData);
+                }
+            } catch(e) {
+                console.error("Error saving training request to Firestore:", e);
+            }
+
+            setTimeout(() => {
+                localStorage.setItem('khbsr_training_submitted', 'true');
+                document.getElementById('training-form').style.display = 'none';
+                document.getElementById('training-success-msg').style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال طلب التسجيل';
+            }, 1000);
+        }
+
+        async function handleAppRequestSubmit(event) {
+            event.preventDefault();
+            const submitBtn = document.getElementById('app-req-submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال الطلب...';
+
+            const formData = {
+                name: document.getElementById('app-req-name').value.trim(),
+                email: document.getElementById('app-req-email').value.trim(),
+                phone: document.getElementById('app-req-phone').value.trim(),
+                idea: document.getElementById('app-req-idea').value,
+                users: document.getElementById('app-req-users').value,
+                dashboard: document.getElementById('app-req-dashboard').value,
+                firebase: document.getElementById('app-req-firebase').value,
+                linksite: document.getElementById('app-req-linksite').value,
+                duration: document.getElementById('app-req-duration').value.trim(),
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                if(window.firebaseDb && window.firebaseFns) {
+                    const reqDocRef = window.firebaseFns.doc(window.firebaseDb, "app_requests", `${formData.email}_${Date.now()}`);
+                    await window.firebaseFns.setDoc(reqDocRef, formData);
+                }
+            } catch(e) {
+                console.error("Error saving app request to Firestore:", e);
+            }
+
+            setTimeout(() => {
+                localStorage.setItem('khbsr_app_request_submitted', 'true');
+                document.getElementById('app-request-form').style.display = 'none';
+                document.getElementById('app-req-success-msg').style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> إرسال طلب المشروع';
+            }, 1000);
         }
     </script>
 </body>
