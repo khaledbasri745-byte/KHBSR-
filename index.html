@@ -647,6 +647,46 @@
             display: none;
         }
 
+        /* تنسيقات تبديل واجهات المصادقة */
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(2, 6, 23, 0.4);
+            padding: 5px;
+            border-radius: 14px;
+        }
+
+        .auth-tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .auth-tab-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: var(--bg-deep);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .auth-form-panel {
+            display: none;
+        }
+
+        .auth-form-panel.active {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         /* ==========================================================================
            [SECTION 08] - الفوتر وأزرار الروابط الاحترافية (Footer & Utility Links)
            ========================================================================== */
@@ -1155,23 +1195,47 @@
             </div>
             
             <div id="login-view">
-                <h2 id="auth-form-title">تسجيل الدخول / إنشاء حساب</h2>
-                <p style="text-align: center;" id="auth-form-subtitle">أدخل بياناتك للاستفادة من الخدمات والميزات المتاحة عبر المنصة:</p>
-                
-                <div class="auth-form-container">
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">تسجيل الدخول</button>
+                    <button class="auth-tab-btn" id="tab-signup-btn" onclick="switchAuthTab('signup')">إنشاء حساب</button>
+                </div>
+
+                <!-- واجهة تسجيل الدخول -->
+                <div class="auth-form-panel active" id="login-panel">
+                    <h2 style="font-size: 1.6rem; margin-bottom: 5px;">تسجيل الدخول</h2>
+                    <p style="text-align: center; margin-bottom: 15px; font-size: 0.9rem;">أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك:</p>
                     <div class="input-group">
-                        <label><i class="fa-solid fa-user"></i> اسم المستخدم الكامل</label>
-                        <input type="text" id="reg-name" placeholder="مثال: خالد بصري">
+                        <label><i class="fa-solid fa-envelope"></i> البريد الإلكتروني</label>
+                        <input type="email" id="login-email" placeholder="khaled@example.com">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-key"></i> كلمة المرور</label>
+                        <input type="password" id="login-pass" placeholder="••••••••">
+                    </div>
+                    <button class="submit-auth-btn" id="login-submit-btn" onclick="handleLoginSubmit()"><i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول</button>
+                </div>
+
+                <!-- واجهة إنشاء حساب -->
+                <div class="auth-form-panel" id="signup-panel">
+                    <h2 style="font-size: 1.6rem; margin-bottom: 5px;">إنشاء حساب جديد</h2>
+                    <p style="text-align: center; margin-bottom: 15px; font-size: 0.9rem;">أنشئ حسابك الجديد بالاسم والبريد الإلكتروني وكلمة المرور:</p>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-user"></i> الاسم الكامل</label>
+                        <input type="text" id="signup-name" placeholder="مثال: خالد بصري">
                     </div>
                     <div class="input-group">
                         <label><i class="fa-solid fa-envelope"></i> البريد الإلكتروني</label>
-                        <input type="email" id="reg-email" placeholder="khaled@example.com">
+                        <input type="email" id="signup-email" placeholder="khaled@example.com">
                     </div>
                     <div class="input-group">
-                        <label><i class="fa-solid fa-key"></i> كلمة المرور الآمنة</label>
-                        <input type="password" id="reg-pass" placeholder="••••••••">
+                        <label><i class="fa-solid fa-key"></i> كلمة المرور</label>
+                        <input type="password" id="signup-pass" placeholder="••••••••">
                     </div>
-                    <button class="submit-auth-btn" id="auth-submit-btn" onclick="handleAuthSubmit()"><i class="fa-solid fa-right-to-bracket"></i> دخول / حفظ الحساب</button>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-key"></i> تأكيد كلمة المرور</label>
+                        <input type="password" id="signup-confirm-pass" placeholder="••••••••">
+                    </div>
+                    <button class="submit-auth-btn" id="signup-submit-btn" onclick="handleSignupSubmit()"><i class="fa-solid fa-user-plus"></i> إنشاء الحساب</button>
                 </div>
             </div>
 
@@ -1186,7 +1250,6 @@
                         </div>
                     </div>
                     <div class="dashboard-actions-row">
-                        <button class="edit-profile-btn" onclick="openEditProfile()"><i class="fa-solid fa-user-pen"></i> تعديل</button>
                         <button class="logout-btn" onclick="handleLogout()"><i class="fa-solid fa-power-off"></i> خروج</button>
                     </div>
                 </div>
@@ -1639,11 +1702,11 @@
         const displayUserName = document.getElementById('display-user-name');
         const displayUserEmail = document.getElementById('display-user-email');
         const userAvatarInitial = document.getElementById('user-avatar-initial');
-        const authFormTitle = document.getElementById('auth-form-title');
-        const authFormSubtitle = document.getElementById('auth-form-subtitle');
-        const authSubmitBtn = document.getElementById('auth-submit-btn');
 
-        let isEditingProfile = false;
+        const loginPanel = document.getElementById('login-panel');
+        const signupPanel = document.getElementById('signup-panel');
+        const tabLoginBtn = document.getElementById('tab-login-btn');
+        const tabSignupBtn = document.getElementById('tab-signup-btn');
 
         // مراقبة حالة المصادقة عبر Firebase Authentication الفعلي
         setTimeout(() => {
@@ -1653,7 +1716,6 @@
                         let displayName = user.displayName || localStorage.getItem('khbsr_user_name') || user.email.split('@')[0];
                         authBoxText.innerText = `حسابي: ${displayName}`;
                         
-                        // جلب البيانات الإضافية من Firestore إن وجدت
                         try {
                             const userDocRef = window.firebaseFns.doc(window.firebaseDb, "users", user.uid);
                             const userDocSnap = await window.firebaseFns.getDoc(userDocRef);
@@ -1677,12 +1739,10 @@
         // تهيئة الحالة الأولية للصفحة الرئيسية في سجل المتصفح
         window.history.replaceState({ page: 'home' }, '', '');
 
-        // الاستماع لحدث زر العودة في المتصفح أو الهاتف للرجوع بضغطة واحدة مباشرة
         window.addEventListener('popstate', (event) => {
             goHome(true);
         });
 
-        // التحقق من حالة إرسال نموذج الدورات التكوينية مسبقاً من الكاش
         window.addEventListener('DOMContentLoaded', () => {
             if(localStorage.getItem('khbsr_training_submitted') === 'true') {
                 document.getElementById('training-form').style.display = 'none';
@@ -1704,7 +1764,6 @@
             if(mainFooter) mainFooter.style.display = 'block';
         }
 
-        // دالة موحدة لدفع حالة واحدة فقط للسجل عند الانتقال لأي صفحة فرعية
         function navigateToSubpage() {
             window.history.pushState({ page: 'subpage' }, '', '');
         }
@@ -1730,6 +1789,20 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        function switchAuthTab(tabName) {
+            if (tabName === 'login') {
+                tabLoginBtn.classList.add('active');
+                tabSignupBtn.classList.remove('active');
+                loginPanel.classList.add('active');
+                signupPanel.classList.remove('active');
+            } else {
+                tabSignupBtn.classList.add('active');
+                tabLoginBtn.classList.remove('active');
+                signupPanel.classList.add('active');
+                loginPanel.classList.remove('active');
+            }
+        }
+
         function openAuthPage() {
             navigateToSubpage();
             mainView.style.display = 'none';
@@ -1747,7 +1820,7 @@
             hideHeaderAndFooter();
             
             const currentUserObj = window.firebaseAuth && window.firebaseAuth.currentUser;
-            if((currentUserObj || localStorage.getItem('khbsr_user_name')) && !isEditingProfile) {
+            if(currentUserObj || localStorage.getItem('khbsr_user_name')) {
                 loginView.style.display = 'none';
                 dashboardView.style.display = 'flex';
                 const nameVal = currentUserObj ? (currentUserObj.displayName || localStorage.getItem('khbsr_user_name') || currentUserObj.email.split('@')[0]) : localStorage.getItem('khbsr_user_name');
@@ -1758,93 +1831,113 @@
             } else {
                 loginView.style.display = 'block';
                 dashboardView.style.display = 'none';
-                if(isEditingProfile) {
-                    authFormTitle.innerText = "تعديل بيانات الحساب";
-                    authFormSubtitle.innerText = "قم بتحديث معلومات حسابك الشخصي والبريد الإلكتروني:";
-                    authSubmitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات';
-                    document.getElementById('reg-name').value = localStorage.getItem('khbsr_user_name') || '';
-                    document.getElementById('reg-email').value = localStorage.getItem('khbsr_user_email') || '';
-                    document.getElementById('reg-pass').value = '';
-                } else {
-                    authFormTitle.innerText = "تسجيل الدخول / إنشاء حساب";
-                    authFormSubtitle.innerText = "أدخل بياناتك للاستفادة من الخدمات والميزات المتاحة عبر المنصة:";
-                    authSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول / حفظ الحساب';
-                }
+                switchAuthTab('login');
             }
 
             authPage.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function openEditProfile() {
-            isEditingProfile = true;
-            dashboardView.style.display = 'none';
-            loginView.style.display = 'block';
-            authFormTitle.innerText = "تعديل بيانات الحساب";
-            authFormSubtitle.innerText = "قم بتحديث معلومات حسابك الشخصي والبريد الإلكتروني:";
-            authSubmitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات';
-            document.getElementById('reg-name').value = localStorage.getItem('khbsr_user_name') || '';
-            document.getElementById('reg-email').value = localStorage.getItem('khbsr_user_email') || '';
-            document.getElementById('reg-pass').value = '';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        async function handleLoginSubmit() {
+            const emailInput = document.getElementById('login-email').value.trim();
+            const passInput = document.getElementById('login-pass').value.trim();
 
-        async function handleAuthSubmit() {
-            const nameInput = document.getElementById('reg-name').value.trim();
-            const emailInput = document.getElementById('reg-email').value.trim();
-            const passInput = document.getElementById('reg-pass').value.trim();
-
-            if(!nameInput || !emailInput || (!passInput && !isEditingProfile)) {
-                alert('يرجى ملء الحقول المطلوبة للاستمرار.');
+            if(!emailInput || !passInput) {
+                alert('يرجى إدخال البريد الإلكتروني وكلمة المرور.');
                 return;
             }
 
-            authSubmitBtn.disabled = true;
-            authSubmitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري المعالجة عبر Firebase...';
+            const loginBtn = document.getElementById('login-submit-btn');
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري تسجيل الدخول...';
+
+            let userName = emailInput.split('@')[0];
 
             try {
                 if (window.firebaseAuth && window.firebaseFns) {
-                    let user = window.firebaseAuth.currentUser;
-                    
-                    if (!user) {
-                        // محاولة تسجيل الدخول مباشرة، وإذا لمطابقة الحساب غير موجود يتم إنشاؤه تلقائياً
-                        try {
-                            const userCred = await window.firebaseFns.signInWithEmailAndPassword(window.firebaseAuth, emailInput, passInput);
-                            user = userCred.user;
-                        } catch (signInErr) {
-                            // إذا لم يكن الحساب موجوداً، نقوم بإنشائه جديداً عبر Firebase Auth
-                            const newUserCred = await window.firebaseFns.createUserWithEmailAndPassword(window.firebaseAuth, emailInput, passInput);
-                            user = newUserCred.user;
-                        }
-                    }
-
-                    if (user) {
-                        // تحديث الاسم في Firebase Profile
-                        await window.firebaseFns.updateProfile(user, { displayName: nameInput });
-
-                        // حفظ إضافي في Firestore لتخزين البيانات بسلاسة
+                    const userCred = await window.firebaseFns.signInWithEmailAndPassword(window.firebaseAuth, emailInput, passInput);
+                    const user = userCred.user;
+                    if (user.displayName) {
+                        userName = user.displayName;
+                    } else {
                         const userDocRef = window.firebaseFns.doc(window.firebaseDb, "users", user.uid);
-                        await window.firebaseFns.setDoc(userDocRef, {
-                            name: nameInput,
-                            email: emailInput,
-                            updatedAt: new Date().toISOString()
-                        }, { merge: true });
+                        const userDocSnap = await window.firebaseFns.getDoc(userDocRef);
+                        if (userDocSnap.exists() && userDocSnap.data().name) {
+                            userName = userDocSnap.data().name;
+                        }
                     }
                 }
             } catch (err) {
-                console.error("Firebase Auth / Firestore Error:", err);
-                // المتابعة بسلاسة عبر التخزين المحلي لضمان عدم تعطل تجربة المستخدم نهائياً
-            } finally {
-                authSubmitBtn.disabled = false;
-                authSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول / حفظ الحساب';
+                console.error("Login error:", err);
+                alert('فشل تسجيل الدخول. تحقق من البريد أو كلمة المرور.');
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+                return;
             }
+
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+
+            localStorage.setItem('khbsr_user_name', userName);
+            localStorage.setItem('khbsr_user_email', emailInput);
+            authBoxText.innerText = `حسابي: ${userName}`;
+
+            loginView.style.display = 'none';
+            dashboardView.style.display = 'flex';
+            displayUserName.innerText = userName;
+            displayUserEmail.innerText = emailInput;
+            userAvatarInitial.innerText = userName.charAt(0).toUpperCase();
+        }
+
+        async function handleSignupSubmit() {
+            const nameInput = document.getElementById('signup-name').value.trim();
+            const emailInput = document.getElementById('signup-email').value.trim();
+            const passInput = document.getElementById('signup-pass').value.trim();
+            const confirmPassInput = document.getElementById('signup-confirm-pass').value.trim();
+
+            if(!nameInput || !emailInput || !passInput || !confirmPassInput) {
+                alert('يرجى ملء جميع الحقول المطلوبة لإنشاء الحساب.');
+                return;
+            }
+
+            if(passInput !== confirmPassInput) {
+                alert('كلمتا المرور غير متطابقتين، يرجى التأكد وإعادة المحاولة.');
+                return;
+            }
+
+            const signupBtn = document.getElementById('signup-submit-btn');
+            signupBtn.disabled = true;
+            signupBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إنشاء الحساب...';
+
+            try {
+                if (window.firebaseAuth && window.firebaseFns) {
+                    const userCred = await window.firebaseFns.createUserWithEmailAndPassword(window.firebaseAuth, emailInput, passInput);
+                    const user = userCred.user;
+
+                    await window.firebaseFns.updateProfile(user, { displayName: nameInput });
+
+                    const userDocRef = window.firebaseFns.doc(window.firebaseDb, "users", user.uid);
+                    await window.firebaseFns.setDoc(userDocRef, {
+                        name: nameInput,
+                        email: emailInput,
+                        createdAt: new Date().toISOString()
+                    }, { merge: true });
+                }
+            } catch (err) {
+                console.error("Signup error:", err);
+                alert('حدث خطأ أثناء إنشاء الحساب أو أن البريد مستخدم مسبقاً.');
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> إنشاء الحساب';
+                return;
+            }
+
+            signupBtn.disabled = false;
+            signupBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> إنشاء الحساب';
 
             localStorage.setItem('khbsr_user_name', nameInput);
             localStorage.setItem('khbsr_user_email', emailInput);
-
             authBoxText.innerText = `حسابي: ${nameInput}`;
-            isEditingProfile = false;
-            
+
             loginView.style.display = 'none';
             dashboardView.style.display = 'flex';
             displayUserName.innerText = nameInput;
@@ -1863,16 +1956,17 @@
 
             localStorage.removeItem('khbsr_user_name');
             localStorage.removeItem('khbsr_user_email');
-            isEditingProfile = false;
             authBoxText.innerText = 'تسجيل الدخول / إنشاء حساب';
             dashboardView.style.display = 'none';
             loginView.style.display = 'block';
-            authFormTitle.innerText = "تسجيل الدخول / إنشاء حساب";
-            authFormSubtitle.innerText = "أدخل بياناتك للاستفادة من الخدمات والميزات المتاحة عبر المنصة:";
-            authSubmitBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> دخول / حفظ الحساب';
-            document.getElementById('reg-name').value = '';
-            document.getElementById('reg-email').value = '';
-            document.getElementById('reg-pass').value = '';
+            switchAuthTab('login');
+            
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-pass').value = '';
+            document.getElementById('signup-name').value = '';
+            document.getElementById('signup-email').value = '';
+            document.getElementById('signup-pass').value = '';
+            document.getElementById('signup-confirm-pass').value = '';
         }
 
         function openTrainingPage() {
@@ -1952,7 +2046,6 @@
             };
 
             try {
-                // حفظ الطلب في Firestore مباشرة لربط النموذج بقاعدة بيانات فايرباس
                 if (window.firebaseDb && window.firebaseFns) {
                     const reqRef = window.firebaseFns.doc(window.firebaseDb, "appRequests", `${Date.now()}_${formData.رقم_الهاتف}`);
                     await window.firebaseFns.setDoc(reqRef, formData);
@@ -2000,7 +2093,6 @@
             };
 
             try {
-                // حفظ طلب التسجيل في Firestore لربطه بنظام فايرباس
                 if (window.firebaseDb && window.firebaseFns) {
                     const trainRef = window.firebaseFns.doc(window.firebaseDb, "trainingRequests", `${Date.now()}_${formData.رقم_الهاتف}`);
                     await window.firebaseFns.setDoc(trainRef, formData);
@@ -2045,7 +2137,6 @@
             appRequestPage.style.display = 'none';
             
             hideHeaderAndFooter();
-            
             accountingPage.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -2065,8 +2156,152 @@
             appRequestPage.style.display = 'none';
             
             hideHeaderAndFooter();
-            
             projectsPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openSketchwareBundlePage() {
+            navigateToSubpage();
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            accountingPage.style.display = 'none';
+            projectsPage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            trainingPage.style.display = 'none';
+            appRequestPage.style.display = 'none';
+            
+            hideHeaderAndFooter();
+            sketchwareBundlePage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openAppDetail(title, desc, downloadUrl) {
+            navigateToSubpage();
+            sketchwareBundlePage.style.display = 'none';
+            document.getElementById('detail-app-title').innerText = title;
+            document.getElementById('detail-app-desc').innerText = desc;
+            
+            const downloadBtn = document.getElementById('detail-download-btn');
+            const progContainer = document.getElementById('detail-prog-container');
+            const progBar = document.getElementById('detail-prog-bar');
+            const statusText = document.getElementById('detail-status-text');
+
+            progContainer.style.display = 'none';
+            statusText.style.display = 'none';
+            progBar.style.width = '0%';
+
+            downloadBtn.onclick = () => {
+                progContainer.style.display = 'block';
+                statusText.style.display = 'block';
+                downloadBtn.style.pointerEvents = 'none';
+                downloadBtn.style.opacity = '0.7';
+
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 2;
+                    progBar.style.width = progress + '%';
+                    statusText.innerText = `جاري تجهيز التحميل الآمن... (${progress}%)`;
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        statusText.innerText = 'تم بدء التحميل بنجاح!';
+                        downloadBtn.style.pointerEvents = 'auto';
+                        downloadBtn.style.opacity = '1';
+
+                        const anchor = document.createElement('a');
+                        anchor.href = downloadUrl;
+                        anchor.target = '_blank';
+                        anchor.download = '';
+                        document.body.appendChild(anchor);
+                        anchor.click();
+                        document.body.removeChild(anchor);
+                    }
+                }, 40);
+            };
+
+            appDetailPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openDevPage(titleText) {
+            navigateToSubpage();
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            authPage.style.display = 'none';
+            accountingPage.style.display = 'none';
+            projectsPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            trainingPage.style.display = 'none';
+            appRequestPage.style.display = 'none';
+            
+            hideHeaderAndFooter();
+            devTitle.innerText = titleText;
+            devDesc.innerText = `قسم "${titleText}" قيد التطوير والتجهيز حالياً ضمن منصة KHBSR لنقدمه لكم بأعلى مستويات الابتكار قريباً.`;
+            devPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openSocialsPage() {
+            navigateToSubpage();
+            mainView.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            accountingPage.style.display = 'none';
+            projectsPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            trainingPage.style.display = 'none';
+            appRequestPage.style.display = 'none';
+            
+            hideHeaderAndFooter();
+            socialsPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openPrivacyPage() {
+            navigateToSubpage();
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            accountingPage.style.display = 'none';
+            projectsPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            aboutPage.style.display = 'none';
+            trainingPage.style.display = 'none';
+            appRequestPage.style.display = 'none';
+            
+            hideHeaderAndFooter();
+            privacyPage.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openAboutPage() {
+            navigateToSubpage();
+            mainView.style.display = 'none';
+            socialsPage.style.display = 'none';
+            privacyPage.style.display = 'none';
+            devPage.style.display = 'none';
+            authPage.style.display = 'none';
+            accountingPage.style.display = 'none';
+            projectsPage.style.display = 'none';
+            sketchwareBundlePage.style.display = 'none';
+            appDetailPage.style.display = 'none';
+            trainingPage.style.display = 'none';
+            appRequestPage.style.display = 'none';
+            
+            hideHeaderAndFooter();
+            aboutPage.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -2081,178 +2316,12 @@
         }
 
         function openUnderConstructionModal(projectName) {
-            document.getElementById('constructionModalText').innerText = `المشروع "${projectName}" قيد الانجاز حالياً ولا ينتقل لأي رابط خارجي.`;
+            document.getElementById('constructionModalText').innerText = `"${projectName}" قيد الانجاز حالياً، وسيتم إطلاقه قريباً ضمن مشاريع منصة KHBSR!`;
             document.getElementById('underConstructionModal').style.display = 'flex';
         }
 
         function closeUnderConstructionModal() {
             document.getElementById('underConstructionModal').style.display = 'none';
-        }
-
-        function openSketchwareBundlePage() {
-            navigateToSubpage();
-            mainView.style.display = 'none';
-            socialsPage.style.display = 'none';
-            privacyPage.style.display = 'none';
-            devPage.style.display = 'none';
-            accountingPage.style.display = 'none';
-            projectsPage.style.display = 'none';
-            authPage.style.display = 'none';
-            appDetailPage.style.display = 'none';
-            aboutPage.style.display = 'none';
-            trainingPage.style.display = 'none';
-            appRequestPage.style.display = 'none';
-            
-            hideHeaderAndFooter();
-            
-            sketchwareBundlePage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openAppDetail(appName, appDesc, downloadUrl) {
-            navigateToSubpage();
-            appDetailPage.style.display = 'block';
-            sketchwareBundlePage.style.display = 'none';
-            
-            document.getElementById('detail-app-title').innerText = appName;
-            document.getElementById('detail-app-desc').innerText = appDesc;
-            document.getElementById('detail-badge-text').innerText = `تفاصيل ومعلومات ${appName}`;
-            
-            const dlBtn = document.getElementById('detail-download-btn');
-            dlBtn.setAttribute('onclick', `startDownload('${downloadUrl}', 'detail-prog-bar', 'detail-status-text', this)`);
-            
-            document.getElementById('detail-prog-container').style.display = 'none';
-            document.getElementById('detail-status-text').style.display = 'none';
-            document.getElementById('detail-prog-bar').style.width = '0%';
-            document.getElementById('detail-status-text').innerText = 'جاهز للتحميل...';
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function startDownload(url, barId, statusId, btnElement) {
-            const container = document.getElementById(barId === 'detail-prog-bar' ? 'detail-prog-container' : barId + '-container');
-            const bar = document.getElementById(barId);
-            const status = document.getElementById(statusId);
-            
-            if(container) container.style.display = 'block';
-            if(status) status.style.display = 'block';
-            if(btnElement) {
-                btnElement.style.pointerEvents = 'none';
-                btnElement.style.opacity = '0.6';
-            }
-            
-            let progress = 0;
-            if(status) status.innerText = 'جارِ بدء الاتصال بالخادم... (0%)';
-            
-            const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 8) + 3;
-                if(progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    if(bar) bar.style.width = '100%';
-                    if(status) status.innerText = 'اكتمل التحميل بنجاح! جارِ تنزيل الملف...';
-                    setTimeout(() => {
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = '';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        
-                        if(btnElement) {
-                            btnElement.style.pointerEvents = 'auto';
-                            btnElement.style.opacity = '1';
-                        }
-                    }, 800);
-                } else {
-                    if(bar) bar.style.width = progress + '%';
-                    if(status) status.innerText = `جارِ التحميل... (${progress}%)`;
-                }
-            }, 120);
-        }
-
-        function openAboutPage() {
-            navigateToSubpage();
-            mainView.style.display = 'none';
-            socialsPage.style.display = 'none';
-            privacyPage.style.display = 'none';
-            devPage.style.display = 'none';
-            accountingPage.style.display = 'none';
-            projectsPage.style.display = 'none';
-            authPage.style.display = 'none';
-            sketchwareBundlePage.style.display = 'none';
-            appDetailPage.style.display = 'none';
-            trainingPage.style.display = 'none';
-            appRequestPage.style.display = 'none';
-            
-            hideHeaderAndFooter();
-            
-            aboutPage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openDevPage(sectionName) {
-            navigateToSubpage();
-            mainView.style.display = 'none';
-            socialsPage.style.display = 'none';
-            privacyPage.style.display = 'none';
-            accountingPage.style.display = 'none';
-            projectsPage.style.display = 'none';
-            authPage.style.display = 'none';
-            sketchwareBundlePage.style.display = 'none';
-            appDetailPage.style.display = 'none';
-            aboutPage.style.display = 'none';
-            trainingPage.style.display = 'none';
-            appRequestPage.style.display = 'none';
-            
-            hideHeaderAndFooter();
-            
-            devTitle.innerText = sectionName;
-            devCodeStatus.innerText = `حالة النظام: قسم ${sectionName} قيد التطوير`;
-            devDesc.innerText = `نعمل حالياً على تطوير وتجهيز قسم "${sectionName}" بأعلى معايير الجودة والاحترافية التقنية ليكون متاحاً قريباً عبر منصة KHBSR.`;
-            
-            devPage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openSocialsPage() {
-            navigateToSubpage();
-            mainView.style.display = 'none';
-            privacyPage.style.display = 'none';
-            devPage.style.display = 'none';
-            accountingPage.style.display = 'none';
-            projectsPage.style.display = 'none';
-            authPage.style.display = 'none';
-            sketchwareBundlePage.style.display = 'none';
-            appDetailPage.style.display = 'none';
-            aboutPage.style.display = 'none';
-            trainingPage.style.display = 'none';
-            appRequestPage.style.display = 'none';
-            
-            hideHeaderAndFooter();
-            
-            socialsPage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openPrivacyPage() {
-            navigateToSubpage();
-            mainView.style.display = 'none';
-            socialsPage.style.display = 'none';
-            devPage.style.display = 'none';
-            accountingPage.style.display = 'none';
-            projectsPage.style.display = 'none';
-            authPage.style.display = 'none';
-            sketchwareBundlePage.style.display = 'none';
-            appDetailPage.style.display = 'none';
-            aboutPage.style.display = 'none';
-            trainingPage.style.display = 'none';
-            appRequestPage.style.display = 'none';
-            
-            hideHeaderAndFooter();
-            
-            privacyPage.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
